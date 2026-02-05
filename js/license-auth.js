@@ -24,7 +24,7 @@ const LICENSE = {
   email: 'renp2@yahoo.com',
   type: 'DEMO',
   generated: '2026-02-05T16:27:15.093Z'
-},
+}
   },
   
   // Generate unique device fingerprint
