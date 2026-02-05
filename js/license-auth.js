@@ -16,14 +16,14 @@ const LICENSE = {
     // Add more license keys here as you sell
     // Format example:
     // 'JOHN-2024-ABCD-1234': { activated: false, deviceId: null, activatedAt: null, buyer: 'John Doe' },
-    'SDXY-LYV7-QB3J-XP4D': { 
+    '857Y-M4WG-M3H3-NDR7': { 
   activated: false, 
   deviceId: null, 
   activatedAt: null, 
-  buyer: 'John Doe',
-  email: 'renp2@yahoo.com',
-  type: 'DEMO',
-  generated: '2026-02-05T16:27:15.093Z'
+  buyer: 'Peter King Ofori',
+  email: 'Peterkin@hotmail.com',
+  type: 'SINGLE',
+  generated: '2026-02-05T17:23:08.549Z'
 }
   },
   
