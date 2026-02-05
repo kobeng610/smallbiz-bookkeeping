@@ -11,143 +11,83 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#667eea">
+
+  <!-- iOS Specific Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SmallBiz">
+
+  <!-- iOS App Icons -->
+  <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png">
 </head>
 <body>
   
-  <!-- Replace your current login section with this -->
-<div id="loginScreen" class="login-screen">
-  <div class="login-container">
-    <div class="login-header">
-      <div class="lock-icon">🔐</div>
-      <h1>SmallBiz BookKeeping Pro</h1>
-      <p>Enter your license key to activate</p>
-    </div>
-    
-    <form id="loginForm" class="login-form">
-      <div class="form-group">
-        <label for="licenseKeyInput">License Key</label>
-        <input 
-          type="text" 
-          id="licenseKeyInput" 
-          placeholder="XXXX-XXXX-XXXX-XXXX" 
-          maxlength="19"
-          required
-          autocomplete="off"
-          style="text-transform: uppercase; letter-spacing: 2px; font-family: 'Courier New', monospace;"
-        >
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-container">
+      <div class="login-header">
+        <div class="lock-icon">🔐</div>
+        <h1>SmallBiz BookKeeping Pro</h1>
+        <p>Enter your license key to activate</p>
       </div>
       
-      <button type="submit" class="btn-primary btn-large">
-        🔓 Activate License
-      </button>
-      
-      <div id="loginError" class="alert alert-error" style="display: none;">
-        ❌ Error message here
-      </div>
-      
-      <div id="loginSuccess" class="alert alert-success" style="display: none;">
-        ✅ License activated! Loading your account...
-      </div>
-    </form>
-    
-    <div class="login-footer">
-      <p>🔐 Your data is secure and encrypted</p>
-      <div class="demo-keys" style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; border: 1px solid #bae6fd;">
-        <p style="margin: 0 0 10px 0; font-weight: 600; color: #0369a1;">📋 Demo License Keys:</p>
-        <code style="display: block; background: white; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 14px;">DEMO-1234-ABCD-5678</code>
-        <code style="display: block; background: white; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 14px;">TEST-9999-ZZZZ-1111</code>
-        <p style="margin: 10px 0 0 0; font-size: 12px; color: #64748b;">Copy and paste one of these keys to try the app</p>
-      </div>
-    </div>
-  </div>
-  
-  <div class="data-warning">
-    ⚠️ <strong>Important:</strong> Your data is stored locally in your browser.
-    Data does not sync between devices or browsers.
-    <strong>Export backups regularly</strong> (Settings → Export All Data) to prevent data loss.
-  </div>
-</div>
-
-<!-- Add these styles to your CSS -->
-<style>
-.demo-keys code {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.demo-keys code:hover {
-  background: #e0f2fe !important;
-  transform: translateX(5px);
-  border-left: 3px solid #0284c7;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  75% { transform: translateX(10px); }
-}
-
-.alert {
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 15px;
-  animation: fadeIn 0.3s ease;
-}
-
-.alert-error {
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
-
-.alert-success {
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-}
-</style>
-
-<!-- Add this JavaScript to make demo keys clickable -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Make demo keys clickable to auto-fill
-  document.querySelectorAll('.demo-keys code').forEach(code => {
-    code.addEventListener('click', () => {
-      const input = document.getElementById('licenseKeyInput');
-      if (input) {
-        input.value = code.textContent;
-        input.focus();
-        // Add flash effect
-        code.style.background = '#bae6fd';
-        setTimeout(() => {
-          code.style.background = 'white';
-        }, 200);
-      }
-    });
-  });
-});
-</script>
-  <button type="submit" class="login-button">
-            <span>Unlock</span>
-            <span class="login-arrow">→</span>
-          </button>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="licenseKeyInput">License Key</label>
+          <input 
+            type="text" 
+            id="licenseKeyInput" 
+            placeholder="XXXX-XXXX-XXXX-XXXX" 
+            maxlength="19"
+            required
+            autocomplete="off"
+            style="text-transform: uppercase; letter-spacing: 2px; font-family: 'Courier New', monospace;"
+          >
         </div>
         
-        <div class="login-options">
-          <label class="remember-me">
-            <input type="checkbox" id="rememberMe" checked>
-            <span>Remember me on this device</span>
-          </label>
+        <button type="submit" class="btn-primary btn-large">
+          🔓 Activate License
+        </button>
+        
+        <div id="loginError" class="alert alert-error" style="display: none;">
+          ❌ Error message here
         </div>
         
-        <div id="loginError" class="login-error" style="display: none;">
-          ❌ Incorrect password. Please try again.
+        <div id="loginSuccess" class="alert alert-success" style="display: none;">
+          ✅ License activated! Loading your account...
         </div>
       </form>
       
       <div class="login-footer">
         <p>🔐 Your data is secure and encrypted</p>
+        <div class="demo-keys" style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; border: 1px solid #bae6fd;">
+          <p style="margin: 0 0 10px 0; font-weight: 600; color: #0369a1;">📋 Demo License Keys:</p>
+          <code style="display: block; background: white; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 14px;">DEMO-1234-ABCD-5678</code>
+          <code style="display: block; background: white; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 14px;">TEST-9999-ZZZZ-1111</code>
+          <p style="margin: 10px 0 0 0; font-size: 12px; color: #64748b;">Copy and paste one of these keys to try the app</p>
+        </div>
       </div>
+    </div>
+    
+    <div class="data-warning">
+      ⚠️ <strong>Important:</strong> Your data is stored locally in your browser.
+      Data does not sync between devices or browsers.
+      <strong>Export backups regularly</strong> (Settings → Export All Data) to prevent data loss.
     </div>
   </div>
 
@@ -757,12 +697,177 @@ document.addEventListener('DOMContentLoaded', () => {
   <!-- Notification Toast -->
   <div id="notificationToast" class="toast"></div>
 
+  <!-- Demo Keys Clickable Style -->
+  <style>
+  .demo-keys code {
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .demo-keys code:hover {
+    background: #e0f2fe !important;
+    transform: translateX(5px);
+    border-left: 3px solid #0284c7;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+  }
+
+  .alert {
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .alert-error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  .alert-success {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+  </style>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  
+  <!-- Demo Keys Clickable Script -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Make demo keys clickable to auto-fill
+    document.querySelectorAll('.demo-keys code').forEach(code => {
+      code.addEventListener('click', () => {
+        const input = document.getElementById('licenseKeyInput');
+        if (input) {
+          input.value = code.textContent;
+          input.focus();
+          // Add flash effect
+          code.style.background = '#bae6fd';
+          setTimeout(() => {
+            code.style.background = 'white';
+          }, 200);
+        }
+      });
+    });
+  });
+  </script>
+  
+  <!-- License Authentication -->
   <script src="js/license-auth.js"></script>
-<script src="js/app.js"></script>
+  
+  <!-- Main App Logic -->
+  <script src="js/app.js"></script>
+  
+  <!-- PWA Service Worker Registration -->
+  <script>
+  // Register Service Worker for PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('✅ PWA: Service Worker registered successfully:', registration.scope);
+          
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('🔄 PWA: New version available! Refresh to update.');
+              }
+            });
+          });
+        })
+        .catch((error) => {
+          console.error('❌ PWA: Service Worker registration failed:', error);
+        });
+    });
+  }
+
+  // Install prompt handler
+  let deferredPrompt;
+  const installButton = document.createElement('button');
+  installButton.textContent = '📱 Install App';
+  installButton.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    z-index: 10000;
+    display: none;
+    transition: all 0.3s ease;
+  `;
+
+  installButton.addEventListener('mouseenter', () => {
+    installButton.style.transform = 'translateY(-2px)';
+    installButton.style.boxShadow = '0 6px 16px rgba(102, 126, 234, 0.5)';
+  });
+
+  installButton.addEventListener('mouseleave', () => {
+    installButton.style.transform = 'translateY(0)';
+    installButton.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+  });
+
+  document.body.appendChild(installButton);
+
+  // Listen for install prompt
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installButton.style.display = 'block';
+    
+    console.log('💡 PWA: Install prompt available');
+  });
+
+  // Handle install button click
+  installButton.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    console.log(`👤 PWA: User response to install prompt: ${outcome}`);
+    
+    if (outcome === 'accepted') {
+      console.log('✅ PWA: User accepted the install prompt');
+    } else {
+      console.log('❌ PWA: User dismissed the install prompt');
+    }
+    
+    deferredPrompt = null;
+    installButton.style.display = 'none';
+  });
+
+  // Hide install button after app is installed
+  window.addEventListener('appinstalled', () => {
+    console.log('🎉 PWA: App was installed successfully');
+    installButton.style.display = 'none';
+    deferredPrompt = null;
+  });
+
+  // Log standalone mode
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    console.log('📱 PWA: Running in standalone mode');
+  }
+  </script>
+  
 </body>
 </html>
