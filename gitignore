@@ -1,0 +1,67 @@
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency Directories (if you add npm later)
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory (if you add npm later)
+.npm
+
+# Environment Variables (if you add them later)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build Output (not needed for this project but good to have)
+dist/
+build/
+
+# Temporary Files
+*.tmp
+temp/
+tmp/
+
+# Backup Files
+*.bak
+backup/
+
+# Test Coverage
+coverage/
+
+# Mac
+.AppleDouble
+.LSOverride
+
+# Windows
+desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
