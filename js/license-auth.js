@@ -10,12 +10,6 @@ const LICENSE = {
   // Valid license keys (You generate these for each buyer)
   // Format: XXXX-XXXX-XXXX-XXXX
   validLicenses: {
-    // Example keys - Replace with real ones for buyers
-    'DEMO-1234-ABCD-5678': { activated: false, deviceId: null, activatedAt: null, buyer: 'Demo User' },
-    'TEST-9999-ZZZZ-1111': { activated: false, deviceId: null, activatedAt: null, buyer: 'Test Customer' },
-    // Add more license keys here as you sell
-    // Format example:
-    // 'JOHN-2024-ABCD-1234': { activated: false, deviceId: null, activatedAt: null, buyer: 'John Doe' },
     '857Y-M4WG-M3H3-NDR7': { 
   activated: false, 
   deviceId: null, 
@@ -24,7 +18,17 @@ const LICENSE = {
   email: 'Peterkin@hotmail.com',
   type: 'SINGLE',
   generated: '2026-02-05T17:23:08.549Z'
-}
+},  // ← ADD COMMA when you add next key
+    '7Y5L-KSGG-8288-WAMQ': { 
+  activated: false, 
+  deviceId: null, 
+  activatedAt: null, 
+  buyer: 'Alma Agra',
+  email: 'almaa.wfg@gmail.com',
+  type: 'DEMO',
+  generated: '2026-02-05T17:57:07.478Z'
+}   // ← ADD COMMA when you add next key
+    // ← NO COMMA on last entry
   },
   
   // Generate unique device fingerprint
