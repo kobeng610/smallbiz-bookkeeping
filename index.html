@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Small Business Bookkeeping Pro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  
+  <div class="app-container">
+    
+    <!-- Data Storage Warning Banner -->
+    <div class="storage-warning-banner">
+      <div class="warning-content">
+        <span class="warning-icon">⚠️</span>
+        <div class="warning-text">
+          <strong>Important: Your data is stored locally in your browser.</strong>
+          <span class="warning-details">
+            Data does not sync between devices or browsers. 
+            <strong>Export backups regularly</strong> (Settings → Export All Data) to prevent data loss.
+          </span>
+        </div>
+        <button class="warning-dismiss" onclick="dismissWarning()">×</button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+      <div class="nav-brand">
+        <h1>📊 SmallBiz BookKeeping Pro</h1>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
+        <a href="#" class="nav-link" data-page="transactions">Transactions</a>
+        <a href="#" class="nav-link" data-page="reports">Financial Reports</a>
+        <a href="#" class="nav-link" data-page="tax">Tax Center</a>
+        <a href="#" class="nav-link" data-page="settings">Settings</a>
+        <a href="#" class="nav-link logout-link" onclick="handleLogout()">Logout</a>
+      </div>
+    </nav>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page active">
+      <header class="page-header">
+        <h2>Financial Dashboard</h2>
+        <div class="header-actions">
+          <select id="dashboardPeriod" class="period-selector">
+            <option value="2025-12">December 2025</option>
+            <option value="2026-01">January 2026</option>
+            <option value="2026-02" selected>February 2026</option>
+            <option value="2026-03">March 2026</option>
+          </select>
+        </div>
+      </header>
+
+      <!-- Period Status Banner -->
+      <div id="periodStatusBanner" class="status-banner"></div>
+
+      <!-- Summary Cards -->
+      <div class="summary-grid">
+        <div class="summary-card income-card">
+          <div class="card-icon">💰</div>
+          <div class="card-content">
+            <h3>Total Income</h3>
+            <div class="card-amount" id="dashTotalIncome">$0.00</div>
+            <div class="card-subtitle">Reviewed transactions</div>
+          </div>
+        </div>
+
+        <div class="summary-card expense-card">
+          <div class="card-icon">💸</div>
+          <div class="card-content">
+            <h3>Total Expenses</h3>
+            <div class="card-amount" id="dashTotalExpenses">$0.00</div>
+            <div class="card-subtitle">Reviewed transactions</div>
+          </div>
+        </div>
+
+        <div class="summary-card profit-card">
+          <div class="card-icon">📈</div>
+          <div class="card-content">
+            <h3>Net Profit/Loss</h3>
+            <div class="card-amount" id="dashNetProfit">$0.00</div>
+            <div class="card-subtitle">Income - Expenses</div>
+          </div>
+        </div>
+
+        <div class="summary-card pending-card">
+          <div class="card-icon">⏳</div>
+          <div class="card-content">
+            <h3>Pending Review</h3>
+            <div class="card-amount" id="dashPendingCount">0</div>
+            <div class="card-subtitle">Unreviewed transactions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-section">
+        <div class="chart-card">
+          <h3>Income vs Expenses Trend</h3>
+          <canvas id="trendChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Expense Breakdown by Category</h3>
+          <canvas id="categoryChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="recent-transactions">
+        <h3>Recent Transactions</h3>
+        <div id="recentTransactionsList"></div>
+      </div>
+    </div>
+
+    <!-- Transactions Page -->
+    <div id="transactions-page" class="page">
+      <header class="page-header">
+        <h2>Transaction Management</h2>
+        <div class="header-actions">
+          <select id="transactionPeriod" class="period-selector">
+            <option value="2025-12">December 2025</option>
+            <option value="2026-01">January 2026</option>
+            <option value="2026-02" selected>February 2026</option>
+            <option value="2026-03">March 2026</option>
+          </select>
+          <button class="btn btn-primary" onclick="showAddTransactionModal()">
+            + Add Transaction
+          </button>
+          <button class="btn btn-secondary" onclick="showImportModal()">
+            📤 Import
+          </button>
+        </div>
+      </header>
+
+      <!-- Period Lock Status -->
+      <div id="transactionLockBanner" class="status-banner"></div>
+
+      <!-- Transaction Filters -->
+      <div class="filter-section">
+        <input type="text" id="searchTransactions" class="filter-input" placeholder="🔍 Search by description, vendor, or category...">
+        
+        <select id="filterType" class="filter-select">
+          <option value="">All Types</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+
+        <select id="filterCategory" class="filter-select">
+          <option value="">All Categories</option>
+        </select>
+
+        <select id="filterReviewed" class="filter-select">
+          <option value="">All Status</option>
+          <option value="reviewed">Reviewed</option>
+          <option value="unreviewed">Unreviewed</option>
+        </select>
+
+        <button class="btn btn-sm" onclick="clearFilters()">Clear Filters</button>
+      </div>
+
+      <!-- Bulk Actions -->
+      <div class="bulk-actions">
+        <input type="checkbox" id="selectAllTransactions" onchange="toggleSelectAll()">
+        <label for="selectAllTransactions">Select All</label>
+        <button class="btn btn-sm" onclick="bulkReview()" id="bulkReviewBtn" disabled>Mark as Reviewed</button>
+        <button class="btn btn-sm btn-danger" onclick="bulkDelete()" id="bulkDeleteBtn" disabled>Delete Selected</button>
+        <span id="selectedCount">0 selected</span>
+      </div>
+
+      <!-- Transactions Table -->
+      <div class="table-container">
+        <table class="data-table" id="transactionsTable">
+          <thead>
+            <tr>
+              <th width="40"><input type="checkbox" id="tableSelectAll" onchange="toggleSelectAll()"></th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="noTransactionsMessage" class="empty-state" style="display:none;">
+        <div class="empty-icon">📋</div>
+        <h3>No transactions found</h3>
+        <p>Add your first transaction or import from a file</p>
+      </div>
+    </div>
+
+    <!-- Financial Reports Page -->
+    <div id="reports-page" class="page">
+      <header class="page-header">
+        <h2>Financial Reports</h2>
+        <div class="header-actions">
+          <select id="reportPeriod" class="period-selector">
+            <option value="2025-12">December 2025</option>
+            <option value="2026-01">January 2026</option>
+            <option value="2026-02" selected>February 2026</option>
+            <option value="2026-03">March 2026</option>
+          </select>
+          <button class="btn btn-primary" onclick="generatePDFReport()">📄 Export PDF</button>
+          <button class="btn btn-secondary" onclick="exportToExcel()">📊 Export Excel</button>
+        </div>
+      </header>
+
+      <!-- Report Type Selector -->
+      <div class="report-selector">
+        <button class="report-tab active" data-report="income-statement" onclick="switchReport('income-statement')">
+          Income Statement
+        </button>
+        <button class="report-tab" data-report="cash-flow" onclick="switchReport('cash-flow')">
+          Cash Flow
+        </button>
+        <button class="report-tab" data-report="category-analysis" onclick="switchReport('category-analysis')">
+          Category Analysis
+        </button>
+        <button class="report-tab" data-report="comparison" onclick="switchReport('comparison')">
+          Period Comparison
+        </button>
+      </div>
+
+      <!-- Income Statement Report -->
+      <div id="income-statement-report" class="report-content active">
+        <div class="report-header">
+          <h3>Income Statement</h3>
+          <p class="report-period">Period: <span id="isReportPeriod"></span></p>
+        </div>
+
+        <div class="report-section">
+          <h4>Revenue</h4>
+          <table class="report-table">
+            <tbody id="incomeStatementRevenue"></tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td><strong>Total Revenue</strong></td>
+                <td><strong id="totalRevenue">$0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="report-section">
+          <h4>Expenses</h4>
+          <table class="report-table">
+            <tbody id="incomeStatementExpenses"></tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td><strong>Total Expenses</strong></td>
+                <td><strong id="totalExpensesReport">$0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="report-section">
+          <table class="report-table">
+            <tfoot>
+              <tr class="net-income-row">
+                <td><strong>Net Income (Loss)</strong></td>
+                <td><strong id="netIncomeReport">$0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Cash Flow Report -->
+      <div id="cash-flow-report" class="report-content">
+        <div class="report-header">
+          <h3>Cash Flow Statement</h3>
+          <p class="report-period">Period: <span id="cfReportPeriod"></span></p>
+        </div>
+
+        <div class="report-section">
+          <h4>Cash Inflows</h4>
+          <table class="report-table">
+            <tbody id="cashFlowInflows"></tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td><strong>Total Cash Inflows</strong></td>
+                <td><strong id="totalInflows">$0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="report-section">
+          <h4>Cash Outflows</h4>
+          <table class="report-table">
+            <tbody id="cashFlowOutflows"></tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td><strong>Total Cash Outflows</strong></td>
+                <td><strong id="totalOutflows">$0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="report-section">
+          <table class="report-table">
+            <tfoot>
+              <tr class="net-income-row">
+                <td><strong>Net Cash Flow</strong></td>
+                <td><strong id="netCashFlow">$0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Category Analysis Report -->
+      <div id="category-analysis-report" class="report-content">
+        <div class="report-header">
+          <h3>Category Analysis</h3>
+          <p class="report-period">Period: <span id="caReportPeriod"></span></p>
+        </div>
+        <div id="categoryAnalysisContent"></div>
+      </div>
+
+      <!-- Period Comparison Report -->
+      <div id="comparison-report" class="report-content">
+        <div class="report-header">
+          <h3>Period Comparison</h3>
+          <div class="comparison-selectors">
+            <select id="comparisonPeriod1" class="period-selector">
+              <option value="2026-01">January 2026</option>
+              <option value="2026-02" selected>February 2026</option>
+            </select>
+            <span>vs</span>
+            <select id="comparisonPeriod2" class="period-selector">
+              <option value="2025-12">December 2025</option>
+              <option value="2026-01" selected>January 2026</option>
+            </select>
+            <button class="btn btn-sm" onclick="runComparison()">Compare</button>
+          </div>
+        </div>
+        <div id="comparisonContent"></div>
+      </div>
+    </div>
+
+    <!-- Tax Center Page -->
+    <div id="tax-page" class="page">
+      <header class="page-header">
+        <h2>Tax Center</h2>
+        <div class="header-actions">
+          <select id="taxYear" class="period-selector">
+            <option value="2024">Tax Year 2024</option>
+            <option value="2025">Tax Year 2025</option>
+            <option value="2026" selected>Tax Year 2026</option>
+          </select>
+          <button class="btn btn-primary" onclick="generateTaxPDF()">📄 Tax Summary PDF</button>
+        </div>
+      </header>
+
+      <div class="tax-summary-grid">
+        <div class="tax-card">
+          <h3>Deductible Expenses</h3>
+          <div class="tax-amount" id="taxDeductibleExpenses">$0.00</div>
+          <p class="tax-subtitle">Schedule C Deductions</p>
+        </div>
+
+        <div class="tax-card">
+          <h3>Business Income</h3>
+          <div class="tax-amount" id="taxBusinessIncome">$0.00</div>
+          <p class="tax-subtitle">Gross Receipts</p>
+        </div>
+
+        <div class="tax-card">
+          <h3>Net Business Income</h3>
+          <div class="tax-amount" id="taxNetIncome">$0.00</div>
+          <p class="tax-subtitle">For Tax Filing</p>
+        </div>
+
+        <div class="tax-card">
+          <h3>Est. Self-Employment Tax</h3>
+          <div class="tax-amount" id="taxSelfEmployment">$0.00</div>
+          <p class="tax-subtitle">15.3% of Net Income</p>
+        </div>
+      </div>
+
+      <!-- Tax Categories Breakdown -->
+      <div class="tax-breakdown">
+        <h3>Schedule C Categories (IRS Form)</h3>
+        <div id="taxCategoriesBreakdown"></div>
+      </div>
+
+      <!-- Tax Documentation Guide -->
+      <div class="tax-guide-section">
+        <h3>📋 Tax Documentation Checklist</h3>
+        <div class="checklist">
+          <label><input type="checkbox"> All receipts scanned and filed</label>
+          <label><input type="checkbox"> Mileage log completed (if applicable)</label>
+          <label><input type="checkbox"> Home office percentage calculated</label>
+          <label><input type="checkbox"> 1099 forms issued to contractors</label>
+          <label><input type="checkbox"> Bank statements reconciled</label>
+          <label><input type="checkbox"> Credit card statements reconciled</label>
+          <label><input type="checkbox"> Quarterly estimated taxes paid</label>
+          <label><input type="checkbox"> Tax documents backed up</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="settings-page" class="page">
+      <header class="page-header">
+        <h2>Settings</h2>
+      </header>
+
+      <div class="settings-section">
+        <h3>📦 Data Backup & Safety</h3>
+        <div class="backup-status-card">
+          <div class="backup-info">
+            <p><strong>⚠️ Important:</strong> Your data is stored locally in your browser only.</p>
+            <p>It does NOT sync to the cloud. Export backups regularly to prevent data loss.</p>
+            <div class="backup-last" id="backupStatus">
+              <span id="lastBackupText">No backup created yet</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="exportAllData()">📥 Export Backup Now</button>
+        <button class="btn btn-secondary" onclick="importAllData()">📤 Restore from Backup</button>
+        <button class="btn btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+      </div>
+
+      <div class="settings-section">
+        <h3>Period Management</h3>
+        <div class="period-list">
+          <div class="period-item">
+            <span>January 2026</span>
+            <button class="btn btn-sm" onclick="closePeriod('2026-01')">Close Period</button>
+            <button class="btn btn-sm btn-secondary" onclick="reopenPeriod('2026-01')">Reopen</button>
+          </div>
+          <div class="period-item">
+            <span>February 2026</span>
+            <button class="btn btn-sm" onclick="closePeriod('2026-02')">Close Period</button>
+            <button class="btn btn-sm btn-secondary" onclick="reopenPeriod('2026-02')">Reopen</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Data Management</h3>
+        <button class="btn btn-primary" onclick="exportAllData()">📥 Export All Data</button>
+        <button class="btn btn-secondary" onclick="importAllData()">📤 Import Data</button>
+        <button class="btn btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+      </div>
+
+      <div class="settings-section">
+        <h3>Business Information</h3>
+        <form id="businessInfoForm">
+          <div class="form-group">
+            <label>Business Name</label>
+            <input type="text" id="businessName" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Tax ID / EIN</label>
+            <input type="text" id="taxId" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Business Address</label>
+            <textarea id="businessAddress" class="form-input"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Transaction Modal -->
+  <div id="addTransactionModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Transaction</h3>
+        <button class="modal-close" onclick="closeModal('addTransactionModal')">&times;</button>
+      </div>
+      <form id="addTransactionForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date *</label>
+            <input type="date" id="txnDate" required class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Type *</label>
+            <select id="txnType" required class="form-input">
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Amount ($) *</label>
+            <input type="number" id="txnAmount" step="0.01" required class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="txnCategory" required class="form-input">
+              <optgroup label="Income Categories">
+                <option value="Sales Revenue">Sales Revenue</option>
+                <option value="Service Revenue">Service Revenue</option>
+                <option value="Interest Income">Interest Income</option>
+                <option value="Other Income">Other Income</option>
+              </optgroup>
+              <optgroup label="Expense Categories">
+                <option value="Advertising & Marketing">Advertising & Marketing</option>
+                <option value="Auto & Vehicle">Auto & Vehicle</option>
+                <option value="Bank Fees">Bank Fees</option>
+                <option value="Contract Labor">Contract Labor</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Legal & Professional">Legal & Professional</option>
+                <option value="Office Supplies">Office Supplies</option>
+                <option value="Rent & Lease">Rent & Lease</option>
+                <option value="Repairs & Maintenance">Repairs & Maintenance</option>
+                <option value="Software & Subscriptions">Software & Subscriptions</option>
+                <option value="Taxes & Licenses">Taxes & Licenses</option>
+                <option value="Travel & Meals">Travel & Meals</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Wages & Payroll">Wages & Payroll</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description *</label>
+          <input type="text" id="txnDescription" required class="form-input" placeholder="e.g., Office supplies from Staples">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Vendor/Client</label>
+            <input type="text" id="txnVendor" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select id="txnPayment" class="form-input">
+              <option value="Cash">Cash</option>
+              <option value="Check">Check</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="PayPal">PayPal</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="txnNotes" class="form-input" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="txnReviewed">
+            Mark as reviewed
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Add Transaction</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('addTransactionModal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Import Modal -->
+  <div id="importModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Import Transactions</h3>
+        <button class="modal-close" onclick="closeModal('importModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Upload a CSV or Excel file with your transactions. File should include columns: Date, Description, Amount, Type, Category</p>
+        
+        <div class="file-upload-area" id="fileUploadArea">
+          <input type="file" id="importFileInput" accept=".csv,.xlsx,.xls" style="display:none;">
+          <div class="upload-placeholder" onclick="document.getElementById('importFileInput').click()">
+            <div class="upload-icon">📁</div>
+            <p>Click to select file or drag and drop</p>
+            <p class="upload-hint">CSV, XLS, or XLSX files</p>
+          </div>
+        </div>
+
+        <div id="importPreview" style="display:none;">
+          <h4>Preview (first 5 rows)</h4>
+          <div id="importPreviewTable"></div>
+          <div class="modal-actions">
+            <button class="btn btn-primary" onclick="confirmImport()">Import All Rows</button>
+            <button class="btn btn-secondary" onclick="cancelImport()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="notificationToast" class="toast"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
