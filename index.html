@@ -14,26 +14,120 @@
 </head>
 <body>
   
-  <!-- Password Protection Screen -->
-  <div id="loginScreen" class="login-screen">
-    <div class="login-container">
-      <div class="login-header">
-        <div class="login-icon">🔒</div>
-        <h1>SmallBiz BookKeeping Pro</h1>
-        <p>Enter password to access your account</p>
+  <!-- Replace your current login section with this -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-container">
+    <div class="login-header">
+      <div class="lock-icon">🔐</div>
+      <h1>SmallBiz BookKeeping Pro</h1>
+      <p>Enter your license key to activate</p>
+    </div>
+    
+    <form id="loginForm" class="login-form">
+      <div class="form-group">
+        <label for="licenseKeyInput">License Key</label>
+        <input 
+          type="text" 
+          id="licenseKeyInput" 
+          placeholder="XXXX-XXXX-XXXX-XXXX" 
+          maxlength="19"
+          required
+          autocomplete="off"
+          style="text-transform: uppercase; letter-spacing: 2px; font-family: 'Courier New', monospace;"
+        >
       </div>
       
-      <form id="loginForm" class="login-form">
-        <div class="login-input-group">
-          <input 
-            type="password" 
-            id="passwordInput" 
-            class="login-input" 
-            placeholder="Enter password"
-            required
-            autocomplete="current-password"
-          >
-          <button type="submit" class="login-button">
+      <button type="submit" class="btn-primary btn-large">
+        🔓 Activate License
+      </button>
+      
+      <div id="loginError" class="alert alert-error" style="display: none;">
+        ❌ Error message here
+      </div>
+      
+      <div id="loginSuccess" class="alert alert-success" style="display: none;">
+        ✅ License activated! Loading your account...
+      </div>
+    </form>
+    
+    <div class="login-footer">
+      <p>🔐 Your data is secure and encrypted</p>
+      <div class="demo-keys" style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; border: 1px solid #bae6fd;">
+        <p style="margin: 0 0 10px 0; font-weight: 600; color: #0369a1;">📋 Demo License Keys:</p>
+        <code style="display: block; background: white; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 14px;">DEMO-1234-ABCD-5678</code>
+        <code style="display: block; background: white; padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 14px;">TEST-9999-ZZZZ-1111</code>
+        <p style="margin: 10px 0 0 0; font-size: 12px; color: #64748b;">Copy and paste one of these keys to try the app</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="data-warning">
+    ⚠️ <strong>Important:</strong> Your data is stored locally in your browser.
+    Data does not sync between devices or browsers.
+    <strong>Export backups regularly</strong> (Settings → Export All Data) to prevent data loss.
+  </div>
+</div>
+
+<!-- Add these styles to your CSS -->
+<style>
+.demo-keys code {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.demo-keys code:hover {
+  background: #e0f2fe !important;
+  transform: translateX(5px);
+  border-left: 3px solid #0284c7;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.alert {
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 15px;
+  animation: fadeIn 0.3s ease;
+}
+
+.alert-error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+</style>
+
+<!-- Add this JavaScript to make demo keys clickable -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Make demo keys clickable to auto-fill
+  document.querySelectorAll('.demo-keys code').forEach(code => {
+    code.addEventListener('click', () => {
+      const input = document.getElementById('licenseKeyInput');
+      if (input) {
+        input.value = code.textContent;
+        input.focus();
+        // Add flash effect
+        code.style.background = '#bae6fd';
+        setTimeout(() => {
+          code.style.background = 'white';
+        }, 200);
+      }
+    });
+  });
+});
+</script>
+  <button type="submit" class="login-button">
             <span>Unlock</span>
             <span class="login-arrow">→</span>
           </button>
