@@ -14,6 +14,8 @@ const LICENSE = {
     'DEMO-1234-ABCD-5678': { activated: false, deviceId: null, activatedAt: null, buyer: 'Demo User' },
     'TEST-9999-ZZZZ-1111': { activated: false, deviceId: null, activatedAt: null, buyer: 'Test Customer' },
     // Add more license keys here as you sell
+    // Format example:
+    // 'JOHN-2024-ABCD-1234': { activated: false, deviceId: null, activatedAt: null, buyer: 'John Doe' },
   },
   
   // Generate unique device fingerprint
@@ -255,6 +257,11 @@ if (!document.querySelector('style[data-license-styles]')) {
       from { opacity: 0; }
       to { opacity: 1; }
     }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
   `;
   document.head.appendChild(style);
 }
@@ -270,20 +277,3 @@ function initializeApp() {
   renderCurrentPage();
   checkBackupReminder();
 }
-
-// ===========================
-// APP STATE & CONFIGURATION
-// ===========================
-const APP = {
-  currentUser: null,
-  currentPeriod: '2026-02',
-  currentPage: 'dashboard',
-  transactions: [],
-  periods: {},
-  businessInfo: {},
-  selectedTransactions: new Set(),
-  charts: {},
-  lastBackupReminder: null
-};
-
-// Rest of your original app.js code continues here...
