@@ -1,5 +1,5 @@
 # Netlify Configuration File
-# Minimal configuration for static HTML/CSS/JS site
+# Optimized for cache-busting with version parameters
 
 [build]
   publish = "."
@@ -13,17 +13,45 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# HTML files - always check for updates
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# Service Worker - always check for updates
 [[headers]]
-  for = "/*.js"
+  for = "/service-worker.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# JavaScript files with version params - long cache
+[[headers]]
+  for = "/js/*.js"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# CSS files with version params - long cache
 [[headers]]
-  for = "/*.css"
+  for = "/css/*.css"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Images and icons - long cache
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Manifest - check occasionally
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Redirects for SPA routing (if needed)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["spa"]}
