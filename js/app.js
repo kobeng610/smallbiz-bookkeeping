@@ -551,7 +551,7 @@ function normalizeDate(value) {
 }
 
 // ===========================
-// DASHBOARD RENDERING
+// DASHBOARD RENDERING - FIXED VERSION
 // ===========================
 function renderDashboard() {
   updatePeriodStatus('periodStatusBanner');
@@ -565,20 +565,44 @@ function renderDashboard() {
     .reduce((sum, t) => sum + t.amount, 0);
   const net = income - expenses;
 
-  // Update summary cards
- // Update summary cards - WITH NULL CHECKS
+  // Update summary cards - WITH BETTER ERROR HANDLING
   const dashTotalIncome = document.getElementById('dashTotalIncome');
   const dashTotalExpenses = document.getElementById('dashTotalExpenses');
   const dashNetProfit = document.getElementById('dashNetProfit');
   const dashPendingCount = document.getElementById('dashPendingCount');
   
-  // Safety check - exit if elements don't exist
-  if (!dashTotalIncome || !dashTotalExpenses || !dashNetProfit || !dashPendingCount) {
-    console.error('Dashboard elements not found! Retrying in 500ms...');
-    // Retry after a short delay
-    setTimeout(() => renderDashboard(), 500);
+  // Check if we're on the dashboard page
+  const dashboardPage = document.getElementById('dashboard-page');
+  if (!dashboardPage || !dashboardPage.classList.contains('active')) {
+    console.log('Dashboard page not active, skipping render');
     return;
   }
+  
+  // Safety check - but with retry limit to prevent infinite loop
+  if (!dashTotalIncome || !dashTotalExpenses || !dashNetProfit || !dashPendingCount) {
+    // Only retry a limited number of times
+    if (!window.dashboardRetryCount) window.dashboardRetryCount = 0;
+    
+    if (window.dashboardRetryCount < 5) {
+      console.warn(`Dashboard elements not found! Retry ${window.dashboardRetryCount + 1}/5 in 200ms...`);
+      window.dashboardRetryCount++;
+      setTimeout(() => renderDashboard(), 200);
+      return;
+    } else {
+      console.error('❌ CRITICAL: Dashboard elements still not found after 5 retries.');
+      console.error('Missing elements:', {
+        dashTotalIncome: !!dashTotalIncome,
+        dashTotalExpenses: !!dashTotalExpenses,
+        dashNetProfit: !!dashNetProfit,
+        dashPendingCount: !!dashPendingCount
+      });
+      window.dashboardRetryCount = 0;
+      return;
+    }
+  }
+  
+  // Reset retry counter on success
+  window.dashboardRetryCount = 0;
   
   dashTotalIncome.textContent = formatCurrency(income);
   dashTotalExpenses.textContent = formatCurrency(expenses);
