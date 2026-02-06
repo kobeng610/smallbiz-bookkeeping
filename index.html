@@ -760,16 +760,15 @@
   </script>
   
   <!-- License Authentication -->
-  <link rel="stylesheet" href="css/styles.css?v=2" />
-<script src="js/license-auth.js?v=2"></script>
-<script src="js/app.js?v=2"></script>
+  <script src="js/license-auth.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
   
   <!-- PWA Service Worker Registration -->
   <script>
   // Register Service Worker for PWA
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && !window.location.hostname.includes('claudeusercontent.com')) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
+      navigator.serviceWorker.register('/service-worker.js?v=2')
         .then((registration) => {
           console.log('✅ PWA: Service Worker registered successfully:', registration.scope);
           
