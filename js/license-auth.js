@@ -27,7 +27,16 @@ const LICENSE = {
   email: 'almaa.wfg@gmail.com',
   type: 'DEMO',
   generated: '2026-02-05T17:57:07.478Z'
-}   // ← ADD COMMA when you add next key
+},
+    'D9VF-JSDK-XUMV-F2BZ': { 
+  activated: false, 
+  deviceId: null, 
+  activatedAt: null, 
+  buyer: 'Kofi',
+  email: 'kobengasiedu@aarp.org',
+  type: 'SINGLE',
+  generated: '2026-02-06T01:09:17.959Z'
+}// ← ADD COMMA when you add next key
     // ← NO COMMA on last entry
   },
   
