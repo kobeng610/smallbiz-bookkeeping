@@ -226,12 +226,25 @@ window.addEventListener('DOMContentLoaded', async () => {
           const app = document.getElementById('mainApp');
           const login = document.getElementById('loginScreen');
           
+          // Completely remove login screen to prevent z-index issues
           if (login) {
-            login.style.display = 'none';
-            // Don't remove, just hide to avoid DOM issues
+            login.remove();
           }
+          
+          // Change body background to app background
+          document.body.style.background = '#f7fafc';
+          document.body.style.width = '100vw';
+          document.body.style.minHeight = '100vh';
+          document.body.style.overflow = 'auto';
+          
+          // Show app with explicit dimensions
           if (app) {
             app.style.display = 'block';
+            app.style.width = '100%';
+            app.style.maxWidth = '1400px';
+            app.style.minHeight = '100vh';
+            app.style.margin = '0 auto';
+            
             // Small delay to ensure DOM is ready
             setTimeout(() => {
               initializeApp();
