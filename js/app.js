@@ -2,6 +2,17 @@
 // INITIALIZATION
 // ===========================
 function initializeApp() {
+  const mainApp = document.getElementById('mainApp');
+  if (!mainApp || mainApp.offsetHeight === 0) {
+    // Delay initialization until layout exists
+    requestAnimationFrame(initializeApp);
+    return;
+  }
+
+  // existing code continues here…
+}
+
+function initializeApp() {
   initializeAppFeatures();
   setupEventListeners();
   loadData();
