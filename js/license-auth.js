@@ -201,11 +201,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     loginScreen.style.display = 'none';
     mainApp.style.display = 'block';
     initializeApp();
-  } else {
-    // Need license activation
-    loginScreen.style.display = 'flex';
-    mainApp.style.display = 'none';
-    if (licenseInput) licenseInput.focus();
+ // Error
+loginError.textContent = '❌ ' + result.error;
+loginError.style.display = 'block';
+loginSuccess.style.display = 'none';
+licenseInput.value = '';
+if (licenseInput) licenseInput.focus();  // ← FIXED
   }
   
   // Handle license activation
@@ -239,11 +240,11 @@ window.addEventListener('DOMContentLoaded', async () => {
         }, 1000);
       } else {
         // Error
-        loginError.textContent = '❌ ' + result.error;
-        loginError.style.display = 'block';
-        loginSuccess.style.display = 'none';
-        licenseInput.value = '';
-        licenseInput.focus();
+loginError.textContent = '❌ ' + result.error;
+loginError.style.display = 'block';
+loginSuccess.style.display = 'none';
+licenseInput.value = '';
+if (licenseInput) licenseInput.focus();  // ← FIXED!
         
         // Shake animation
         loginError.style.animation = 'none';
