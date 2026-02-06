@@ -36,7 +36,7 @@ const LICENSE = {
   email: 'kobengasiedu@aarp.org',
   type: 'SINGLE',
   generated: '2026-02-06T01:09:17.959Z'
-}// ← ADD COMMA when you add next key
+}  // ← ADD COMMA when you add next key
     // ← NO COMMA on last entry
   },
   
