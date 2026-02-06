@@ -288,6 +288,13 @@ function showMainApp() {
   // Show main app with proper display
   if (mainApp) {
     mainApp.style.display = 'block';
+    document.documentElement.style.height = '100%';
+document.body.style.minHeight = '100vh';
+
+if (mainApp) {
+  mainApp.style.minHeight = '100vh';
+  mainApp.style.width = '100%';
+}
     mainApp.style.visibility = 'visible';
     mainApp.style.opacity = '1';
     console.log('✅ Main app display set to block');
@@ -301,23 +308,21 @@ function showMainApp() {
   
   // Wait for DOM to be ready, then initialize
   // Use requestAnimationFrame to ensure DOM is painted
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      console.log('🚀 Initializing app...');
-      
-      // Check if initializeApp function exists
-      if (typeof initializeApp === 'function') {
-        try {
-          initializeApp();
-          console.log('✅ App initialized successfully!');
-        } catch (error) {
-          console.error('❌ Error initializing app:', error);
-        }
-      } else {
-        console.error('❌ initializeApp function not found! Make sure app.js is loaded.');
-      }
-    });
-  });
+  setTimeout(() => {
+  console.log('🚀 Initializing app...');
+
+  if (typeof initializeApp === 'function') {
+    try {
+      initializeApp();
+      console.log('✅ App initialized successfully!');
+    } catch (error) {
+      console.error('❌ Error initializing app:', error);
+    }
+  } else {
+    console.error('❌ initializeApp function not found! Make sure app.js is loaded.');
+  }
+}, 100);
+
 }
 
 // Add animations
