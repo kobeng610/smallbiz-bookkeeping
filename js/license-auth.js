@@ -223,12 +223,20 @@ window.addEventListener('DOMContentLoaded', async () => {
         
         // Wait a moment then show app
         setTimeout(() => {
-          if (loginScreen) {
-            loginScreen.style.display = 'none';
-            loginScreen.remove(); // Completely remove it
+          const app = document.getElementById('mainApp');
+          const login = document.getElementById('loginScreen');
+          
+          if (login) {
+            login.style.display = 'none';
+            // Don't remove, just hide to avoid DOM issues
           }
-          if (mainApp) mainApp.style.display = 'block';
-          initializeApp();
+          if (app) {
+            app.style.display = 'block';
+            // Small delay to ensure DOM is ready
+            setTimeout(() => {
+              initializeApp();
+            }, 100);
+          }
         }, 1500);
       } else {
         // Error
