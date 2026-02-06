@@ -11,33 +11,32 @@ const LICENSE = {
   // Format: XXXX-XXXX-XXXX-XXXX
   validLicenses: {
     '857Y-M4WG-M3H3-NDR7': { 
-  activated: false, 
-  deviceId: null, 
-  activatedAt: null, 
-  buyer: 'Peter King Ofori',
-  email: 'Peterkin@hotmail.com',
-  type: 'SINGLE',
-  generated: '2026-02-05T17:23:08.549Z'
-},  // ← ADD COMMA when you add next key
+      activated: false, 
+      deviceId: null, 
+      activatedAt: null, 
+      buyer: 'Peter King Ofori',
+      email: 'Peterkin@hotmail.com',
+      type: 'SINGLE',
+      generated: '2026-02-05T17:23:08.549Z'
+    },
     '7Y5L-KSGG-8288-WAMQ': { 
-  activated: false, 
-  deviceId: null, 
-  activatedAt: null, 
-  buyer: 'Alma Agra',
-  email: 'almaa.wfg@gmail.com',
-  type: 'DEMO',
-  generated: '2026-02-05T17:57:07.478Z'
-},
+      activated: false, 
+      deviceId: null, 
+      activatedAt: null, 
+      buyer: 'Alma Agra',
+      email: 'almaa.wfg@gmail.com',
+      type: 'DEMO',
+      generated: '2026-02-05T17:57:07.478Z'
+    },
     'D9VF-JSDK-XUMV-F2BZ': { 
-  activated: false, 
-  deviceId: null, 
-  activatedAt: null, 
-  buyer: 'Kofi',
-  email: 'kobengasiedu@aarp.org',
-  type: 'SINGLE',
-  generated: '2026-02-06T01:09:17.959Z'
-}  // ← ADD COMMA when you add next key
-    // ← NO COMMA on last entry
+      activated: false, 
+      deviceId: null, 
+      activatedAt: null, 
+      buyer: 'Kofi',
+      email: 'kobengasiedu@aarp.org',
+      type: 'SINGLE',
+      generated: '2026-02-06T01:09:17.959Z'
+    }
   },
   
   // Generate unique device fingerprint
@@ -198,15 +197,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   
   if (isLicensed) {
     // Already licensed - show app
-    loginScreen.style.display = 'none';
-    mainApp.style.display = 'block';
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (mainApp) mainApp.style.display = 'block';
     initializeApp();
- // Error
-loginError.textContent = '❌ ' + result.error;
-loginError.style.display = 'block';
-loginSuccess.style.display = 'none';
-licenseInput.value = '';
-if (licenseInput) licenseInput.focus();  // ← FIXED
   }
   
   // Handle license activation
@@ -217,37 +210,45 @@ if (licenseInput) licenseInput.focus();  // ← FIXED
       const licenseKey = licenseInput.value.trim().toUpperCase();
       
       // Hide previous messages
-      loginError.style.display = 'none';
-      loginSuccess.style.display = 'none';
+      if (loginError) loginError.style.display = 'none';
+      if (loginSuccess) loginSuccess.style.display = 'none';
       
       // Validate license
       const result = await LICENSE.validateLicense(licenseKey);
       
-     if (result.valid) {
-  // Success!
-  loginSuccess.style.display = 'block';
-  loginError.style.display = 'none';
-  
-  // Wait a moment then show app
-  setTimeout(() => {
-    loginScreen.style.display = 'none';
-    loginScreen.remove(); // Completely remove it
-    mainApp.style.display = 'block';
-    initializeApp();
-  }, 1500);
-} else {
+      if (result.valid) {
+        // Success!
+        if (loginSuccess) loginSuccess.style.display = 'block';
+        if (loginError) loginError.style.display = 'none';
+        
+        // Wait a moment then show app
+        setTimeout(() => {
+          if (loginScreen) {
+            loginScreen.style.display = 'none';
+            loginScreen.remove(); // Completely remove it
+          }
+          if (mainApp) mainApp.style.display = 'block';
+          initializeApp();
+        }, 1500);
+      } else {
         // Error
-loginError.textContent = '❌ ' + result.error;
-loginError.style.display = 'block';
-loginSuccess.style.display = 'none';
-licenseInput.value = '';
-if (licenseInput) licenseInput.focus();  // ← FIXED!
+        if (loginError) {
+          loginError.textContent = '❌ ' + result.error;
+          loginError.style.display = 'block';
+        }
+        if (loginSuccess) loginSuccess.style.display = 'none';
+        if (licenseInput) {
+          licenseInput.value = '';
+          licenseInput.focus();
+        }
         
         // Shake animation
-        loginError.style.animation = 'none';
-        setTimeout(() => {
-          loginError.style.animation = 'shake 0.4s ease';
-        }, 10);
+        if (loginError) {
+          loginError.style.animation = 'none';
+          setTimeout(() => {
+            loginError.style.animation = 'shake 0.4s ease';
+          }, 10);
+        }
       }
     });
   }
