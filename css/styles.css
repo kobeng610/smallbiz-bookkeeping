@@ -1568,3 +1568,56 @@ body {
 .mb-10 { margin-bottom: 10px; }
 .mb-20 { margin-bottom: 20px; }
 .hidden { display: none !important; }
+
+/* ===========================
+   FIX FOR ZERO HEIGHT COLLAPSE
+   ADD THIS TO THE END OF styles.css
+   =========================== */
+
+/* Force app container to have proper dimensions */
+#mainApp {
+  display: block !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  height: auto !important;
+  max-width: none !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Ensure navigation has height */
+.main-nav {
+  width: 100% !important;
+  min-height: 60px !important;
+  height: auto !important;
+  display: flex !important;
+}
+
+/* Ensure pages have proper display */
+.page {
+  display: none;
+  min-height: 500px !important;
+  height: auto !important;
+  width: 100% !important;
+  padding: 30px;
+}
+
+.page.active {
+  display: block !important;
+}
+
+/* Ensure dashboard elements render */
+.page-header,
+.summary-grid,
+.charts-section {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 50px !important;
+  display: block !important;
+}
+
+/* Force summary cards to have dimensions */
+.summary-card {
+  min-height: 120px !important;
+  min-width: 200px !important;
+}
