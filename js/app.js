@@ -23,21 +23,10 @@ const APP = {
   charts: {},
   lastBackupReminder: null
 };
-  
-  // Original initialization code continues below
-  initializeAppFeatures();
-  setupEventListeners();
-  loadData();
-  renderCurrentPage();
-  checkBackupReminder();
-}
 
 // ===========================
-// APP STATE & CONFIGURATION
+// STORAGE WARNING & BACKUP REMINDERS
 // ===========================
-const APP = {
-  currentUser: null,
-  currentPeriod: '2026-02',
   currentPage: 'dashboard',
   transactions: [],
   periods: {},
