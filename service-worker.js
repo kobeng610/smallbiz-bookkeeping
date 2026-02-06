@@ -33,9 +33,12 @@ self.addEventListener('install', (event) => {
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   console.log('[Service Worker] Activating...');
+
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
+    (async () => {
+      const cacheNames = await caches.keys();
+
+      await Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
             console.log('[Service Worker] Deleting old cache:', cacheName);
@@ -43,10 +46,12 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    }).then(() => {
+
+      console.log('[Service Worker] Claiming clients...');
+      await self.clients.claim();
+
       console.log('[Service Worker] Activated successfully');
-      return self.clients.claim(); // Take control immediately
-    })
+    })()
   );
 });
 
