@@ -8,6 +8,7 @@ function initializeApp() {
 
   // 🔑 FORCE initial page visibility
   switchPage(APP.currentPage || 'dashboard');
+  ensurePageVisibility();   // ← this is the missing call
 
   checkBackupReminder();
 }
@@ -195,6 +196,16 @@ function renderCurrentPage() {
     case 'settings':
       renderSettings();
       break;
+  }
+}
+function ensurePageVisibility() {
+  const activePage = document.querySelector('.page.active');
+  if (!activePage) {
+    console.warn('⚠️ No active page found — forcing dashboard');
+    const dashboard = document.getElementById('dashboard-page');
+    if (dashboard) {
+      dashboard.classList.add('active');
+    }
   }
 }
 
