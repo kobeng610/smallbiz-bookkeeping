@@ -5,7 +5,10 @@ function initializeApp() {
   initializeAppFeatures();
   setupEventListeners();
   loadData();
-  renderCurrentPage();
+
+  // 🔑 FORCE initial page visibility
+  switchPage(APP.currentPage || 'dashboard');
+
   checkBackupReminder();
 }
 
