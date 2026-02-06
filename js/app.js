@@ -60,7 +60,9 @@ window.addEventListener('DOMContentLoaded', () => {
   } else {
     loginScreen.style.display = 'flex';
     mainApp.style.display = 'none';
-    passwordInput.focus();
+    if (document.getElementById('licenseKeyInput')) {
+  document.getElementById('licenseKeyInput').focus();
+}
   }
   
   // Handle login form submission
