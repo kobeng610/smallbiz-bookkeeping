@@ -168,9 +168,11 @@ const LICENSE = {
 };
 
 // ===========================
-// LICENSE KEY UI HANDLER
+// LICENSE KEY UI HANDLER - FIXED VERSION
 // ===========================
 window.addEventListener('DOMContentLoaded', async () => {
+  console.log('🔐 License system initializing...');
+  
   const loginScreen = document.getElementById('loginScreen');
   const mainApp = document.getElementById('mainApp');
   const loginForm = document.getElementById('loginForm');
@@ -196,10 +198,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   const isLicensed = await LICENSE.isLicensed();
   
   if (isLicensed) {
-    // Already licensed - show app
-    if (loginScreen) loginScreen.style.display = 'none';
-    if (mainApp) mainApp.style.display = 'block';
-    initializeApp();
+    console.log('✅ Valid license found - showing app');
+    // Already licensed - show app immediately
+    showMainApp();
+  } else {
+    console.log('🔓 No license found - showing login screen');
   }
   
   // Handle license activation
@@ -209,6 +212,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       
       const licenseKey = licenseInput.value.trim().toUpperCase();
       
+      console.log('🔑 Validating license key...');
+      
       // Hide previous messages
       if (loginError) loginError.style.display = 'none';
       if (loginSuccess) loginSuccess.style.display = 'none';
@@ -217,41 +222,22 @@ window.addEventListener('DOMContentLoaded', async () => {
       const result = await LICENSE.validateLicense(licenseKey);
       
       if (result.valid) {
+        console.log('✅ License validated successfully!');
+        
         // Success!
-        if (loginSuccess) loginSuccess.style.display = 'block';
+        if (loginSuccess) {
+          loginSuccess.textContent = '✅ License activated! Loading your account...';
+          loginSuccess.style.display = 'block';
+        }
         if (loginError) loginError.style.display = 'none';
         
         // Wait a moment then show app
         setTimeout(() => {
-          const app = document.getElementById('mainApp');
-          const login = document.getElementById('loginScreen');
-          
-          // Completely remove login screen to prevent z-index issues
-          if (login) {
-            login.remove();
-          }
-          
-          // Change body background to app background
-          document.body.style.background = '#f7fafc';
-          document.body.style.width = '100vw';
-          document.body.style.minHeight = '100vh';
-          document.body.style.overflow = 'auto';
-          
-          // Show app with explicit dimensions
-          if (app) {
-            app.style.display = 'block';
-            app.style.width = '100%';
-            app.style.maxWidth = '1400px';
-            app.style.minHeight = '100vh';
-            app.style.margin = '0 auto';
-            
-            // Small delay to ensure DOM is ready
-            setTimeout(() => {
-              initializeApp();
-            }, 100);
-          }
+          showMainApp();
         }, 1500);
       } else {
+        console.error('❌ License validation failed:', result.error);
+        
         // Error
         if (loginError) {
           loginError.textContent = '❌ ' + result.error;
@@ -286,6 +272,54 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+// CRITICAL FIX: Properly show the main app
+function showMainApp() {
+  console.log('📱 Showing main app...');
+  
+  const loginScreen = document.getElementById('loginScreen');
+  const mainApp = document.getElementById('mainApp');
+  
+  // Hide login screen
+  if (loginScreen) {
+    loginScreen.style.display = 'none';
+    console.log('✅ Login screen hidden');
+  }
+  
+  // Show main app with proper display
+  if (mainApp) {
+    mainApp.style.display = 'block';
+    mainApp.style.visibility = 'visible';
+    mainApp.style.opacity = '1';
+    console.log('✅ Main app display set to block');
+  }
+  
+  // Fix body styles
+  document.body.style.background = '#f7fafc';
+  document.body.style.margin = '0';
+  document.body.style.padding = '0';
+  document.body.style.overflow = 'auto';
+  
+  // Wait for DOM to be ready, then initialize
+  // Use requestAnimationFrame to ensure DOM is painted
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      console.log('🚀 Initializing app...');
+      
+      // Check if initializeApp function exists
+      if (typeof initializeApp === 'function') {
+        try {
+          initializeApp();
+          console.log('✅ App initialized successfully!');
+        } catch (error) {
+          console.error('❌ Error initializing app:', error);
+        }
+      } else {
+        console.error('❌ initializeApp function not found! Make sure app.js is loaded.');
+      }
+    });
+  });
+}
+
 // Add animations
 if (!document.querySelector('style[data-license-styles]')) {
   const style = document.createElement('style');
@@ -306,16 +340,4 @@ if (!document.querySelector('style[data-license-styles]')) {
     }
   `;
   document.head.appendChild(style);
-}
-
-// Initialize app only after license validation
-function initializeApp() {
-  if (!LICENSE.isLicensed()) return;
-  
-  // Original initialization code
-  initializeAppFeatures();
-  setupEventListeners();
-  loadData();
-  renderCurrentPage();
-  checkBackupReminder();
 }
