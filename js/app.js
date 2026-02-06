@@ -1,134 +1,17 @@
 // ===========================
-// PASSWORD PROTECTION SYSTEM
+// INITIALIZATION
 // ===========================
-const AUTH = {
-  // Password hash (SHA-256 of "MySecretPass123")
-  // In production, use proper backend authentication
-  passwordHash: '3c4e4e8e5a6e7d8c9b0a1f2e3d4c5b6a7890123456789abcdef0123456789abc',
-  storageKey: 'sbfa_auth_token',
-  
-  // Simple hash function (for demo - use proper hashing in production)
-  async hashPassword(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  },
-  
-  async checkPassword(password) {
-    const hash = await this.hashPassword(password);
-    // For this demo, we'll check against the actual password
-    return password === 'MySecretPass123';
-  },
-  
-  isLoggedIn() {
-    const token = localStorage.getItem(this.storageKey);
-    return token === 'authenticated';
-  },
-  
-  login(rememberMe) {
-    if (rememberMe) {
-      localStorage.setItem(this.storageKey, 'authenticated');
-    } else {
-      sessionStorage.setItem(this.storageKey, 'authenticated');
-    }
-  },
-  
-  logout() {
-    localStorage.removeItem(this.storageKey);
-    sessionStorage.removeItem(this.storageKey);
-    // Clear all app data on logout for security
-    location.reload();
-  }
-};
-
-// Check authentication on page load
-window.addEventListener('DOMContentLoaded', () => {
-  const loginScreen = document.getElementById('loginScreen');
-  const mainApp = document.getElementById('mainApp');
-  const loginForm = document.getElementById('loginForm');
-  const passwordInput = document.getElementById('passwordInput');
-  const loginError = document.getElementById('loginError');
-  const logoutBtn = document.getElementById('logoutBtn');
-  
-  // Check if already logged in
-  if (AUTH.isLoggedIn()) {
-    loginScreen.style.display = 'none';
-    mainApp.style.display = 'block';
-    initializeApp();
-  } else {
-    loginScreen.style.display = 'flex';
-    mainApp.style.display = 'none';
-    if (document.getElementById('licenseKeyInput')) {
-  document.getElementById('licenseKeyInput').focus();
+function initializeApp() {
+  initializeAppFeatures();
+  setupEventListeners();
+  loadData();
+  renderCurrentPage();
+  checkBackupReminder();
 }
-  }
-  
-  // Handle login form submission
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const password = passwordInput.value;
-    const rememberMe = document.getElementById('rememberMe').checked;
-    
-    const isValid = await AUTH.checkPassword(password);
-    
-    if (isValid) {
-      AUTH.login(rememberMe);
-      
-      // Smooth transition
-      loginScreen.style.animation = 'fadeOut 0.3s ease';
-      setTimeout(() => {
-        loginScreen.style.display = 'none';
-        mainApp.style.display = 'block';
-        mainApp.style.animation = 'fadeIn 0.3s ease';
-        initializeApp();
-      }, 300);
-    } else {
-      // Show error
-      loginError.style.display = 'block';
-      passwordInput.value = '';
-      passwordInput.focus();
-      
-      // Shake animation
-      loginError.style.animation = 'none';
-      setTimeout(() => {
-        loginError.style.animation = 'shake 0.4s ease';
-      }, 10);
-      
-      // Hide error after 3 seconds
-      setTimeout(() => {
-        loginError.style.display = 'none';
-      }, 3000);
-    }
-  });
-  
-  // Handle logout
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (confirm('Are you sure you want to logout?')) {
-        AUTH.logout();
-      }
-    });
-  }
-});
-
-// Add fadeOut animation to CSS if not present
-if (!document.querySelector('style[data-auth-styles]')) {
-  const style = document.createElement('style');
-  style.setAttribute('data-auth-styles', 'true');
-  style.textContent = `
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-  `;
   document.head.appendChild(style);
 }
 
