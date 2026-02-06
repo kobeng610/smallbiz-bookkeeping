@@ -1689,3 +1689,23 @@ body:has(#loginScreen:not([style*="display: none"])) {
   pointer-events: none !important;
   visibility: hidden !important;
 }
+/* 🔥 FORCE APP TO PARTICIPATE IN LAYOUT */
+#mainApp {
+  position: relative !important;
+  min-height: 100vh !important;
+  height: auto !important;
+}
+
+.page {
+  position: relative !important;
+  min-height: 100vh;
+}
+
+/* Only hide inactive pages */
+.page:not(.active) {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
