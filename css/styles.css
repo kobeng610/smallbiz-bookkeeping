@@ -1681,3 +1681,11 @@ body:has(#loginScreen:not([style*="display: none"])) {
   min-height: 500px !important;
   transform: none !important;
 }
+/* ===== LOGIN SCREEN HARD DISABLE AFTER AUTH ===== */
+#loginScreen {
+  display: none !important;
+  position: static !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
