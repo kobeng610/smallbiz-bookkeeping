@@ -223,19 +223,19 @@ if (licenseInput) licenseInput.focus();  // ← FIXED
       // Validate license
       const result = await LICENSE.validateLicense(licenseKey);
       
-      if (result.valid) {
-        // Success!
-        loginSuccess.style.display = 'block';
-        loginError.style.display = 'none';
-        
-        // Wait a moment then show app
-        setTimeout(() => {
-  loginScreen.style.display = 'none';
-  loginScreen.remove(); // Remove it completely
-  mainApp.style.display = 'block';
-  initializeApp();
-}, 1500);
-      } else {
+     if (result.valid) {
+  // Success!
+  loginSuccess.style.display = 'block';
+  loginError.style.display = 'none';
+  
+  // Wait a moment then show app
+  setTimeout(() => {
+    loginScreen.style.display = 'none';
+    loginScreen.remove(); // Completely remove it
+    mainApp.style.display = 'block';
+    initializeApp();
+  }, 1500);
+} else {
         // Error
 loginError.textContent = '❌ ' + result.error;
 loginError.style.display = 'block';
