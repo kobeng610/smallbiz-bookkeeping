@@ -27,18 +27,6 @@ const APP = {
 // ===========================
 // STORAGE WARNING & BACKUP REMINDERS
 // ===========================
-  currentPage: 'dashboard',
-  transactions: [],
-  periods: {},
-  businessInfo: {},
-  selectedTransactions: new Set(),
-  charts: {},
-  lastBackupReminder: null
-};
-
-// ===========================
-// STORAGE WARNING & BACKUP REMINDERS
-// ===========================
 function dismissWarning() {
   const banner = document.querySelector('.storage-warning-banner');
   if (banner) {
@@ -1193,7 +1181,7 @@ function exportAllData() {
   a.click();
   URL.revokeObjectURL(url);
   
-  recordBackup(); // Record that backup was created
+  recordBackup();
 }
 
 function importAllData() {
@@ -1556,7 +1544,6 @@ window.showAddTransactionModal = showAddTransactionModal;
 window.showImportModal = showImportModal;
 window.closeModal = closeModal;
 window.confirmImport = function() {
-  // Placeholder for import confirmation
   showToast('Import functionality ready', 'info');
 };
 window.cancelImport = function() {
