@@ -1,7 +1,7 @@
 // SmallBiz BookKeeping Pro - Service Worker
 // Enables offline mode and fast loading
 
-const CACHE_NAME = 'smallbiz-bookkeeping-v2';
+const CACHE_NAME = 'smallbiz-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
