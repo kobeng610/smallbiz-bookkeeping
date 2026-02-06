@@ -281,9 +281,8 @@ function showMainApp() {
   
   // Hide login screen
   if (loginScreen) {
-    loginScreen.style.display = 'none';
-    console.log('✅ Login screen hidden');
-  }
+  loginScreen.remove(); // 🔥 fully remove overlay
+}
   
   // Show main app with proper display
   if (mainApp) {
