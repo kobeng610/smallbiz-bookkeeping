@@ -445,16 +445,18 @@ body:has(#loginScreen:not([style*="display: none"])) {
 .page {
   display: none !important;
   padding: 30px !important;
-  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   position: relative !important;
   z-index: 1 !important;
   min-height: 500px !important;
   height: auto !important;
   width: 100% !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .page.active {
   display: block !important;
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
 }
 
 @keyframes fadeInUp {
@@ -1670,4 +1672,12 @@ body:has(#loginScreen:not([style*="display: none"])) {
   min-width: 200px !important;
   width: 100% !important;
   height: auto !important;
+}
+
+.page.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  height: auto !important;
+  min-height: 500px !important;
+  transform: none !important;
 }
