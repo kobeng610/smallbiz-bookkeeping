@@ -230,14 +230,11 @@ if (licenseInput) licenseInput.focus();  // ← FIXED
         
         // Wait a moment then show app
         setTimeout(() => {
-          loginScreen.style.animation = 'fadeOut 0.3s ease';
-          setTimeout(() => {
-            loginScreen.style.display = 'none';
-            mainApp.style.display = 'block';
-            mainApp.style.animation = 'fadeIn 0.3s ease';
-            initializeApp();
-          }, 300);
-        }, 1000);
+  loginScreen.style.display = 'none';
+  loginScreen.remove(); // Remove it completely
+  mainApp.style.display = 'block';
+  initializeApp();
+}, 1500);
       } else {
         // Error
 loginError.textContent = '❌ ' + result.error;
