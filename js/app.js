@@ -8,16 +8,21 @@ function initializeApp() {
   renderCurrentPage();
   checkBackupReminder();
 }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  document.head.appendChild(style);
-}
 
-// Initialize app only after authentication
-function initializeApp() {
-  if (!AUTH.isLoggedIn()) return;
+// ===========================
+// APP STATE & CONFIGURATION
+// ===========================
+const APP = {
+  currentUser: null,
+  currentPeriod: '2026-02',
+  currentPage: 'dashboard',
+  transactions: [],
+  periods: {},
+  businessInfo: {},
+  selectedTransactions: new Set(),
+  charts: {},
+  lastBackupReminder: null
+};
   
   // Original initialization code continues below
   initializeAppFeatures();
