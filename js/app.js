@@ -566,11 +566,25 @@ function renderDashboard() {
   const net = income - expenses;
 
   // Update summary cards
-  document.getElementById('dashTotalIncome').textContent = formatCurrency(income);
-  document.getElementById('dashTotalExpenses').textContent = formatCurrency(expenses);
-  document.getElementById('dashNetProfit').textContent = formatCurrency(net);
-  document.getElementById('dashNetProfit').style.color = net >= 0 ? '#10b981' : '#ef4444';
-  document.getElementById('dashPendingCount').textContent = unreviewed.length;
+ // Update summary cards - WITH NULL CHECKS
+  const dashTotalIncome = document.getElementById('dashTotalIncome');
+  const dashTotalExpenses = document.getElementById('dashTotalExpenses');
+  const dashNetProfit = document.getElementById('dashNetProfit');
+  const dashPendingCount = document.getElementById('dashPendingCount');
+  
+  // Safety check - exit if elements don't exist
+  if (!dashTotalIncome || !dashTotalExpenses || !dashNetProfit || !dashPendingCount) {
+    console.error('Dashboard elements not found! Retrying in 500ms...');
+    // Retry after a short delay
+    setTimeout(() => renderDashboard(), 500);
+    return;
+  }
+  
+  dashTotalIncome.textContent = formatCurrency(income);
+  dashTotalExpenses.textContent = formatCurrency(expenses);
+  dashNetProfit.textContent = formatCurrency(net);
+  dashNetProfit.style.color = net >= 0 ? '#10b981' : '#ef4444';
+  dashPendingCount.textContent = unreviewed.length;
 
   // Render charts
   renderTrendChart();
