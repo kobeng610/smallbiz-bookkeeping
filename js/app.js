@@ -3,23 +3,26 @@
 // ===========================
 function initializeApp() {
   const mainApp = document.getElementById('mainApp');
+
+  // 🧱 WAIT until app container actually has layout
   if (!mainApp || mainApp.offsetHeight === 0) {
-    // Delay initialization until layout exists
     requestAnimationFrame(initializeApp);
     return;
   }
 
-  // existing code continues here…
-}
-
-function initializeApp() {
+  // ✅ Normal initialization
   initializeAppFeatures();
   setupEventListeners();
   loadData();
 
-  // 🔑 FORCE initial page visibility
-  switchPage(APP.currentPage || 'dashboard');
-  ensurePageVisibility();   // ← this is the missing call
+  // 🔑 FORCE visible page
+  if (typeof switchPage === 'function') {
+    switchPage(APP?.currentPage || 'dashboard');
+  }
+
+  if (typeof ensurePageVisibility === 'function') {
+    ensurePageVisibility();
+  }
 
   checkBackupReminder();
 }
